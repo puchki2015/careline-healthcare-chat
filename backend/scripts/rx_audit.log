@@ -1,0 +1,49 @@
+12:58:22 | INFO    | thread=- | Scenario 3: Amoxicillin for a healthy patient -> LOW risk (pharmacist only)
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ▶ node=load_patient started
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | Loaded patient_id=P002 (age=30, eGFR=105.0, 0 meds, 0 allergies, recent_orders=[])
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | AUDIT | actor=system | action=patient_loaded | patient_id=P002
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ✔ node=load_patient finished in 0.00s
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ▶ node=validate_prescription started
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | Prescription valid (revision 1): amoxicillin 500.0mg x3/day oral
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | AUDIT | actor=prescriber:DR-22 | action=prescription_submitted | rev=1 amoxicillin 500.0mg x3/day
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ✔ node=validate_prescription finished in 0.00s
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ▶ node=dispatch_checks started
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | Dispatching 4 parallel checks: ['check_interactions', 'check_allergies', 'check_dosage', 'check_formulary']
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ✔ node=dispatch_checks finished in 0.00s
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ▶ node=check_allergies started
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ▶ node=check_interactions started
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | allergies -> severity=none
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ▶ node=check_formulary started
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ▶ node=check_dosage started
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | interactions -> severity=none (0 findings)
+12:58:22 | INFO    | thread=- | STREAM | checking allergies...
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ✔ node=check_allergies finished in 0.00s
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | formulary -> severity=none covered=True
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | dosage -> severity=none daily=1500.0mg eGFR=105.0
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ✔ node=check_interactions finished in 0.00s
+12:58:22 | INFO    | thread=- | STREAM | checking interactions...
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ✔ node=check_formulary finished in 0.00s
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ✔ node=check_dosage finished in 0.00s
+12:58:22 | INFO    | thread=- | STREAM | checking formulary coverage...
+12:58:22 | INFO    | thread=- | STREAM | checking dosage & renal function...
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | ▶ node=risk_assessment started
+12:58:22 | INFO    | thread=rx-P002-c5c38462 | Risk assessment: worst_severity=none -> risk_level=low (from 4 checks)
+12:58:26 | INFO    | thread=rx-P002-c5c38462 | LLM summary generated (356 chars, 4 recommendations)
+12:58:26 | INFO    | thread=rx-P002-c5c38462 | Routing to pharmacist_review
+12:58:26 | INFO    | thread=rx-P002-c5c38462 | AUDIT | actor=ai | action=risk_assessed | rev=1 risk=low
+12:58:26 | INFO    | thread=rx-P002-c5c38462 | ✔ node=risk_assessment finished in 3.98s
+12:58:26 | INFO    | thread=rx-P002-c5c38462 | ▶ node=pharmacist_review started
+12:58:26 | INFO    | thread=rx-P002-c5c38462 | ⏸ node=pharmacist_review paused - waiting for human input
+12:58:26 | INFO    | thread=- | STATE | next=('pharmacist_review',) | pending_tasks=['pharmacist_review']
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | ▶ node=pharmacist_review started
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | Pharmacist decision: approve
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | AUDIT | actor=pharmacist:2 | action=approved | rev=1
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | ✔ node=pharmacist_review finished in 0.00s
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | ▶ node=release_order started
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | Order released to pharmacy system: ORD-C07F4015E1
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | AUDIT | actor=system | action=order_released | order_id=ORD-C07F4015E1
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | ✔ node=release_order finished in 0.00s
+12:59:54 | INFO    | thread=rx-P002-c5c38462 | ▶ node=patient_instructions started
+12:59:57 | INFO    | thread=rx-P002-c5c38462 | AUDIT | actor=ai | action=patient_instructions_generated | 485 chars
+12:59:57 | INFO    | thread=rx-P002-c5c38462 | ✔ node=patient_instructions finished in 3.81s
+12:59:57 | INFO    | thread=- | Graph finished with status=released

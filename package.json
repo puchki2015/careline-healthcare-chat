@@ -1,0 +1,10 @@
+{
+  "name": "careline",
+  "private": true,
+  "scripts": {
+    "supabase": "supabase"
+  },
+  "devDependencies": {
+    "supabase": "^2.120.0"
+  }
+}

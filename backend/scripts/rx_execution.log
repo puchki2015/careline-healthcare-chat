@@ -1,0 +1,328 @@
+13:35:07 | INFO    | thread=- | SCENARIO  | Running example 3: Amoxicillin for a healthy patient -> LOW risk (pharmacist only)
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP START | load_patient | Read the patient's record and previous medication orders
+13:35:07 | INFO    | thread=rx-P002-6623e316 | Loaded patient_id=P002 (age=30, eGFR=105.0, 0 meds, 0 allergies, recent_orders=[])
+13:35:07 | INFO    | thread=rx-P002-6623e316 | AUDIT     | actor=system | action=patient_loaded | patient_id=P002
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | load_patient | finished in 0.00 seconds
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP START | validate_prescription | Check that the prescription is valid and supported
+13:35:07 | INFO    | thread=rx-P002-6623e316 | VALID | Prescription revision=1 passed input validation
+13:35:07 | INFO    | thread=rx-P002-6623e316 | NEXT | Run all four safety checks on revision=1
+13:35:07 | INFO    | thread=rx-P002-6623e316 | AUDIT     | actor=prescriber:DR-22 | action=prescription_submitted | rev=1 amoxicillin 500.0mg x3/day
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | validate_prescription | finished in 0.00 seconds
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP START | dispatch_checks | Start four independent safety checks in parallel
+13:35:07 | INFO    | thread=rx-P002-6623e316 | PARALLEL  | Starting 4 checks together; risk assessment waits for ALL to finish: check_interactions, check_allergies, check_dosage, check_formulary
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | dispatch_checks | finished in 0.00 seconds
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP START | check_allergies | Check the patient's known allergies
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP START | check_interactions | Look for conflicts with existing medicines
+13:35:07 | INFO    | thread=rx-P002-6623e316 | CHECK     | Allergies: severity=none; findings=0
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP START | check_dosage | Check dose limits and kidney-related precautions
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP START | check_formulary | Check whether insurance covers the medicine
+13:35:07 | INFO    | thread=rx-P002-6623e316 | CHECK     | Drug interactions: severity=none; findings=0
+13:35:07 | INFO    | thread=- | PROGRESS  | checking allergies...
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | check_allergies | finished in 0.00 seconds
+13:35:07 | INFO    | thread=rx-P002-6623e316 | CHECK     | Dose and kidney function: severity=none; daily dose=1500.0mg
+13:35:07 | INFO    | thread=rx-P002-6623e316 | CHECK     | Insurance coverage: severity=none; covered=True
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | check_interactions | finished in 0.00 seconds
+13:35:07 | INFO    | thread=- | PROGRESS  | checking interactions...
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | check_dosage | finished in 0.00 seconds
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | check_formulary | finished in 0.00 seconds
+13:35:07 | INFO    | thread=- | PROGRESS  | checking dosage & renal function...
+13:35:07 | INFO    | thread=- | PROGRESS  | checking formulary coverage...
+13:35:07 | INFO    | thread=rx-P002-6623e316 | STEP START | risk_assessment | Combine all safety results and explain the risk
+13:35:07 | INFO    | thread=rx-P002-6623e316 | RISK      | Checked 4 results for revision 1; highest severity=none; overall risk=low
+13:35:11 | INFO    | thread=rx-P002-6623e316 | LLM summary generated (340 chars, 4 recommendations)
+13:35:11 | INFO    | thread=rx-P002-6623e316 | NEXT STEP | pharmacist_review because overall risk is low
+13:35:11 | INFO    | thread=rx-P002-6623e316 | AUDIT     | actor=ai | action=risk_assessed | rev=1 risk=low
+13:35:11 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | risk_assessment | finished in 3.84 seconds
+13:35:11 | INFO    | thread=rx-P002-6623e316 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:35:11 | INFO    | thread=rx-P002-6623e316 | WAITING    | pharmacist_review | workflow paused for human input; this node restarts on resume
+13:35:11 | INFO    | thread=- | PAUSED    | Next nodes=('pharmacist_review',) | Waiting tasks=['pharmacist_review']
+13:35:11 | INFO    | thread=rx-P002-6623e316 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:35:11 | INFO    | thread=rx-P002-6623e316 | HUMAN     | Pharmacist chose: approve
+13:35:11 | INFO    | thread=rx-P002-6623e316 | AUDIT     | actor=pharmacist:PH-03 | action=approved | rev=1
+13:35:11 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | pharmacist_review | finished in 0.00 seconds
+13:35:11 | INFO    | thread=rx-P002-6623e316 | STEP START | release_order | Create the approved pharmacy order
+13:35:11 | INFO    | thread=rx-P002-6623e316 | ORDER | Created approved pharmacy order ORD-3A36D2063D
+13:35:11 | INFO    | thread=rx-P002-6623e316 | AUDIT     | actor=system | action=order_released | order_id=ORD-3A36D2063D
+13:35:11 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | release_order | finished in 0.00 seconds
+13:35:11 | INFO    | thread=rx-P002-6623e316 | STEP START | patient_instructions | Prepare simple instructions for the patient
+13:35:13 | INFO    | thread=rx-P002-6623e316 | AUDIT     | actor=ai | action=patient_instructions_generated | 410 chars
+13:35:13 | INFO    | thread=rx-P002-6623e316 | STEP DONE  | patient_instructions | finished in 1.84 seconds
+13:35:13 | INFO    | thread=- | COMPLETE  | Workflow ended; final status=released
+13:36:03 | INFO    | thread=- | SCENARIO  | Running example 3: Amoxicillin for a healthy patient -> LOW risk (pharmacist only)
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP START | load_patient | Read the patient's record and previous medication orders
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | Loaded patient_id=P002 (age=30, eGFR=105.0, 0 meds, 0 allergies, recent_orders=[])
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | AUDIT     | actor=system | action=patient_loaded | patient_id=P002
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | load_patient | finished in 0.00 seconds
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP START | validate_prescription | Check that the prescription is valid and supported
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | VALID | Prescription revision=1 passed input validation
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | NEXT | Run all four safety checks on revision=1
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | AUDIT     | actor=prescriber:DR-22 | action=prescription_submitted | rev=1 amoxicillin 500.0mg x3/day
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | validate_prescription | finished in 0.00 seconds
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP START | dispatch_checks | Start four independent safety checks in parallel
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | PARALLEL  | Starting 4 checks together; risk assessment waits for ALL to finish: check_interactions, check_allergies, check_dosage, check_formulary
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | dispatch_checks | finished in 0.00 seconds
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP START | check_allergies | Check the patient's known allergies
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP START | check_interactions | Look for conflicts with existing medicines
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP START | check_formulary | Check whether insurance covers the medicine
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP START | check_dosage | Check dose limits and kidney-related precautions
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | CHECK     | Allergies: severity=none; findings=0
+13:36:03 | INFO    | thread=- | PROGRESS  | checking allergies...
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | CHECK     | Drug interactions: severity=none; findings=0
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | CHECK     | Insurance coverage: severity=none; covered=True
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | CHECK     | Dose and kidney function: severity=none; daily dose=1500.0mg
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | check_allergies | finished in 0.00 seconds
+13:36:03 | INFO    | thread=- | PROGRESS  | checking interactions...
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | check_interactions | finished in 0.00 seconds
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | check_formulary | finished in 0.00 seconds
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | check_dosage | finished in 0.00 seconds
+13:36:03 | INFO    | thread=- | PROGRESS  | checking formulary coverage...
+13:36:03 | INFO    | thread=- | PROGRESS  | checking dosage & renal function...
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | STEP START | risk_assessment | Combine all safety results and explain the risk
+13:36:03 | INFO    | thread=rx-P002-4bbe879d | RISK      | Checked 4 results for revision 1; highest severity=none; overall risk=low
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | LLM summary generated (281 chars, 3 recommendations)
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | NEXT STEP | pharmacist_review because overall risk is low
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | AUDIT     | actor=ai | action=risk_assessed | rev=1 risk=low
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | risk_assessment | finished in 3.84 seconds
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | WAITING    | pharmacist_review | workflow paused for human input; this node restarts on resume
+13:36:07 | INFO    | thread=- | PAUSED    | Next nodes=('pharmacist_review',) | Waiting tasks=['pharmacist_review']
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | HUMAN     | Pharmacist chose: approve
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | AUDIT     | actor=pharmacist:PH-03 | action=approved | rev=1
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | pharmacist_review | finished in 0.00 seconds
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | STEP START | release_order | Create the approved pharmacy order
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | ORDER | Created approved pharmacy order ORD-8A8DFC810E
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | AUDIT     | actor=system | action=order_released | order_id=ORD-8A8DFC810E
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | release_order | finished in 0.00 seconds
+13:36:07 | INFO    | thread=rx-P002-4bbe879d | STEP START | patient_instructions | Prepare simple instructions for the patient
+13:36:09 | INFO    | thread=rx-P002-4bbe879d | AUDIT     | actor=ai | action=patient_instructions_generated | 462 chars
+13:36:09 | INFO    | thread=rx-P002-4bbe879d | STEP DONE  | patient_instructions | finished in 1.92 seconds
+13:36:09 | INFO    | thread=- | COMPLETE  | Workflow ended; final status=released
+13:37:47 | INFO    | thread=- | SCENARIO  | Running example 3: Amoxicillin for a healthy patient -> LOW risk (pharmacist only)
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP START | load_patient | Read the patient's record and previous medication orders
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | Loaded patient_id=P002 (age=30, eGFR=105.0, 0 meds, 0 allergies, recent_orders=[])
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | AUDIT     | actor=system | action=patient_loaded | patient_id=P002
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | load_patient | finished in 0.00 seconds
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP START | validate_prescription | Check that the prescription is valid and supported
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | VALID | Prescription revision=1 passed input validation
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | NEXT | Run all four safety checks on revision=1
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | AUDIT     | actor=prescriber:DR-22 | action=prescription_submitted | rev=1 amoxicillin 500.0mg x3/day
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | validate_prescription | finished in 0.00 seconds
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP START | dispatch_checks | Start four independent safety checks in parallel
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | PARALLEL  | Starting 4 checks together; risk assessment waits for ALL to finish: check_interactions, check_allergies, check_dosage, check_formulary
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | dispatch_checks | finished in 0.00 seconds
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP START | check_allergies | Check the patient's known allergies
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | CHECK     | Allergies: severity=none; findings=0
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP START | check_interactions | Look for conflicts with existing medicines
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP START | check_formulary | Check whether insurance covers the medicine
+13:37:47 | INFO    | thread=- | PROGRESS  | checking allergies...
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP START | check_dosage | Check dose limits and kidney-related precautions
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | check_allergies | finished in 0.00 seconds
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | CHECK     | Drug interactions: severity=none; findings=0
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | CHECK     | Insurance coverage: severity=none; covered=True
+13:37:47 | INFO    | thread=- | PROGRESS  | checking interactions...
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | CHECK     | Dose and kidney function: severity=none; daily dose=1500.0mg
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | check_interactions | finished in 0.00 seconds
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | check_formulary | finished in 0.00 seconds
+13:37:47 | INFO    | thread=- | PROGRESS  | checking formulary coverage...
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | check_dosage | finished in 0.00 seconds
+13:37:47 | INFO    | thread=- | PROGRESS  | checking dosage & renal function...
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | STEP START | risk_assessment | Combine all safety results and explain the risk
+13:37:47 | INFO    | thread=rx-P002-6edaeb99 | RISK      | Checked 4 results for revision 1; highest severity=none; overall risk=low
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | LLM summary generated (345 chars, 4 recommendations)
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | NEXT STEP | pharmacist_review because overall risk is low
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | AUDIT     | actor=ai | action=risk_assessed | rev=1 risk=low
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | risk_assessment | finished in 3.22 seconds
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | WAITING    | pharmacist_review | workflow paused for human input; this node restarts on resume
+13:37:50 | DEBUG   | thread=- | STREAM | interrupt raised
+13:37:50 | INFO    | thread=- | PAUSED    | Next nodes=('pharmacist_review',) | Waiting tasks=['pharmacist_review']
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | HUMAN     | Pharmacist chose: approve
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | AUDIT     | actor=pharmacist:PH-03 | action=approved | rev=1
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | pharmacist_review | finished in 0.00 seconds
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | STEP START | release_order | Create the approved pharmacy order
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | ORDER | Created approved pharmacy order ORD-A507B9A1B2
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | AUDIT     | actor=system | action=order_released | order_id=ORD-A507B9A1B2
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | release_order | finished in 0.00 seconds
+13:37:50 | INFO    | thread=rx-P002-6edaeb99 | STEP START | patient_instructions | Prepare simple instructions for the patient
+13:37:52 | INFO    | thread=rx-P002-6edaeb99 | AUDIT     | actor=ai | action=patient_instructions_generated | 436 chars
+13:37:52 | INFO    | thread=rx-P002-6edaeb99 | STEP DONE  | patient_instructions | finished in 1.53 seconds
+13:37:52 | INFO    | thread=- | COMPLETE  | Workflow ended; final status=released
+13:42:37 | INFO    | thread=- | SCENARIO  | Running example 1: Ibuprofen for a patient on warfarin with CKD  -> HIGH risk (prescriber override path)
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP START | load_patient | Read the patient's record and previous medication orders
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | Loaded patient_id=P001 (age=67, eGFR=45.0, 2 meds, 1 allergies, recent_orders=[])
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | AUDIT     | actor=system | action=patient_loaded | patient_id=P001
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | load_patient | finished in 0.00 seconds
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP START | validate_prescription | Check that the prescription is valid and supported
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | VALID | Prescription revision=1 passed input validation
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | NEXT | Run all four safety checks on revision=1
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | AUDIT     | actor=prescriber:DR-17 | action=prescription_submitted | rev=1 ibuprofen 400.0mg x3/day
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | validate_prescription | finished in 0.00 seconds
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP START | dispatch_checks | Start four independent safety checks in parallel
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | PARALLEL  | Starting 4 checks together; risk assessment waits for ALL to finish: check_interactions, check_allergies, check_dosage, check_formulary
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | dispatch_checks | finished in 0.00 seconds
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP START | check_allergies | Check the patient's known allergies
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP START | check_interactions | Look for conflicts with existing medicines
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | CHECK     | Allergies: severity=none; findings=0
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP START | check_formulary | Check whether insurance covers the medicine
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP START | check_dosage | Check dose limits and kidney-related precautions
+13:42:37 | INFO    | thread=- | PROGRESS  | checking allergies...
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | CHECK     | Drug interactions: severity=major; findings=2
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | check_allergies | finished in 0.00 seconds
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | CHECK     | Insurance coverage: severity=none; covered=True
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | CHECK     | Dose and kidney function: severity=moderate; daily dose=1200.0mg
+13:42:37 | INFO    | thread=- | PROGRESS  | checking interactions...
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | check_interactions | finished in 0.00 seconds
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | check_formulary | finished in 0.00 seconds
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | check_dosage | finished in 0.00 seconds
+13:42:37 | INFO    | thread=- | PROGRESS  | checking formulary coverage...
+13:42:37 | INFO    | thread=- | PROGRESS  | checking dosage & renal function...
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | STEP START | risk_assessment | Combine all safety results and explain the risk
+13:42:37 | INFO    | thread=rx-P001-145a73a2 | RISK      | Checked 4 results for revision 1; highest severity=major; overall risk=high
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | LLM summary generated (328 chars, 4 recommendations)
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | NEXT STEP | prescriber_review because overall risk is high
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | AUDIT     | actor=ai | action=risk_assessed | rev=1 risk=high
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | risk_assessment | finished in 6.27 seconds
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP START | prescriber_review | Pause for the prescribing doctor's decision
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | WAITING    | prescriber_review | workflow paused for human input; this node restarts on resume
+13:42:43 | DEBUG   | thread=- | STREAM | interrupt raised
+13:42:43 | INFO    | thread=- | PAUSED    | Next nodes=('prescriber_review',) | Waiting tasks=['prescriber_review']
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP START | prescriber_review | Pause for the prescribing doctor's decision
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | HUMAN     | Doctor chose: override
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | AUDIT     | actor=prescriber:DR-17 | action=override | Short course, INR monitored twice weekly
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | prescriber_review | finished in 0.00 seconds
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | WAITING    | pharmacist_review | workflow paused for human input; this node restarts on resume
+13:42:43 | DEBUG   | thread=- | STREAM | interrupt raised
+13:42:43 | INFO    | thread=- | PAUSED    | Next nodes=('pharmacist_review',) | Waiting tasks=['pharmacist_review']
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | HUMAN     | Pharmacist chose: approve
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | AUDIT     | actor=pharmacist:PH-03 | action=approved | rev=1
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | pharmacist_review | finished in 0.00 seconds
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP START | release_order | Create the approved pharmacy order
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | ORDER | Created approved pharmacy order ORD-C96BD2AD8C
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | AUDIT     | actor=system | action=order_released | order_id=ORD-C96BD2AD8C
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | release_order | finished in 0.00 seconds
+13:42:43 | INFO    | thread=rx-P001-145a73a2 | STEP START | patient_instructions | Prepare simple instructions for the patient
+13:42:44 | INFO    | thread=rx-P001-145a73a2 | AUDIT     | actor=ai | action=patient_instructions_generated | 456 chars
+13:42:44 | INFO    | thread=rx-P001-145a73a2 | STEP DONE  | patient_instructions | finished in 1.57 seconds
+13:42:44 | INFO    | thread=- | COMPLETE  | Workflow ended; final status=released
+13:48:45 | INFO    | thread=- | SCENARIO  | Running example 1: Ibuprofen for a patient on warfarin with CKD  -> HIGH risk (prescriber override path)
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP START | load_patient | Read the patient's record and previous medication orders
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | Loaded patient_id=P001 (age=67, eGFR=45.0, 2 meds, 1 allergies, recent_orders=[])
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | AUDIT     | actor=system | action=patient_loaded | patient_id=P001
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | load_patient | finished in 0.00 seconds
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP START | validate_prescription | Check that the prescription is valid and supported
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | VALID | Prescription revision=1 passed input validation
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | NEXT | Run all four safety checks on revision=1
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | AUDIT     | actor=prescriber:DR-17 | action=prescription_submitted | rev=1 ibuprofen 400.0mg x3/day
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | validate_prescription | finished in 0.00 seconds
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP START | dispatch_checks | Start four independent safety checks in parallel
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | PARALLEL  | Starting 4 checks together; risk assessment waits for ALL to finish: check_interactions, check_allergies, check_dosage, check_formulary
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | dispatch_checks | finished in 0.00 seconds
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP START | check_allergies | Check the patient's known allergies
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP START | check_interactions | Look for conflicts with existing medicines
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | CHECK     | Allergies: severity=none; findings=0
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP START | check_formulary | Check whether insurance covers the medicine
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP START | check_dosage | Check dose limits and kidney-related precautions
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | CHECK     | Drug interactions: severity=major; findings=2
+13:48:45 | INFO    | thread=- | PROGRESS  | checking allergies...
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | check_allergies | finished in 0.00 seconds
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | CHECK     | Insurance coverage: severity=none; covered=True
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | CHECK     | Dose and kidney function: severity=moderate; daily dose=1200.0mg
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | check_interactions | finished in 0.00 seconds
+13:48:45 | INFO    | thread=- | PROGRESS  | checking interactions...
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | check_formulary | finished in 0.00 seconds
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | check_dosage | finished in 0.00 seconds
+13:48:45 | INFO    | thread=- | PROGRESS  | checking formulary coverage...
+13:48:45 | INFO    | thread=- | PROGRESS  | checking dosage & renal function...
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | STEP START | risk_assessment | Combine all safety results and explain the risk
+13:48:45 | INFO    | thread=rx-P001-ce76ed90 | RISK      | Checked 4 results for revision 1; highest severity=major; overall risk=high
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | LLM summary generated (410 chars, 4 recommendations)
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | NEXT STEP | prescriber_review because overall risk is high
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | AUDIT     | actor=ai | action=risk_assessed | rev=1 risk=high
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | risk_assessment | finished in 3.27 seconds
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP START | prescriber_review | Pause for the prescribing doctor's decision
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | WAITING    | prescriber_review | workflow paused for human input; this node restarts on resume
+13:48:48 | DEBUG   | thread=- | STREAM | interrupt raised
+13:48:48 | INFO    | thread=- | PAUSED    | Next nodes=('prescriber_review',) | Waiting tasks=['prescriber_review']
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP START | prescriber_review | Pause for the prescribing doctor's decision
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | HUMAN     | Doctor chose: override
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | AUDIT     | actor=prescriber:DR-17 | action=override | Short course, INR monitored twice weekly
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | prescriber_review | finished in 0.00 seconds
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | WAITING    | pharmacist_review | workflow paused for human input; this node restarts on resume
+13:48:48 | DEBUG   | thread=- | STREAM | interrupt raised
+13:48:48 | INFO    | thread=- | PAUSED    | Next nodes=('pharmacist_review',) | Waiting tasks=['pharmacist_review']
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | HUMAN     | Pharmacist chose: approve
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | AUDIT     | actor=pharmacist:PH-03 | action=approved | rev=1
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | pharmacist_review | finished in 0.00 seconds
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP START | release_order | Create the approved pharmacy order
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | ORDER | Created approved pharmacy order ORD-68CA7AE2F2
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | AUDIT     | actor=system | action=order_released | order_id=ORD-68CA7AE2F2
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | release_order | finished in 0.00 seconds
+13:48:48 | INFO    | thread=rx-P001-ce76ed90 | STEP START | patient_instructions | Prepare simple instructions for the patient
+13:48:49 | INFO    | thread=rx-P001-ce76ed90 | AUDIT     | actor=ai | action=patient_instructions_generated | 450 chars
+13:48:49 | INFO    | thread=rx-P001-ce76ed90 | STEP DONE  | patient_instructions | finished in 1.19 seconds
+13:48:49 | INFO    | thread=- | COMPLETE  | Workflow ended; final status=released
+13:49:23 | INFO    | thread=- | SCENARIO  | Running example 1: Ibuprofen for a patient on warfarin with CKD  -> HIGH risk (prescriber override path)
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | load_patient | Read the patient's record and previous medication orders
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | Loaded patient_id=P001 (age=67, eGFR=45.0, 2 meds, 1 allergies, recent_orders=[])
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | AUDIT     | actor=system | action=patient_loaded | patient_id=P001
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | load_patient | finished in 0.00 seconds
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | validate_prescription | Check that the prescription is valid and supported
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | VALID | Prescription revision=1 passed input validation
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | NEXT | Run all four safety checks on revision=1
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | AUDIT     | actor=prescriber:DR-17 | action=prescription_submitted | rev=1 ibuprofen 400.0mg x3/day
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | validate_prescription | finished in 0.00 seconds
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | dispatch_checks | Start four independent safety checks in parallel
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | PARALLEL  | Starting 4 checks together; risk assessment waits for ALL to finish: check_interactions, check_allergies, check_dosage, check_formulary
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | dispatch_checks | finished in 0.00 seconds
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | check_allergies | Check the patient's known allergies
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | check_interactions | Look for conflicts with existing medicines
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | CHECK     | Allergies: severity=none; findings=0
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | check_formulary | Check whether insurance covers the medicine
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | check_dosage | Check dose limits and kidney-related precautions
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | CHECK     | Drug interactions: severity=major; findings=2
+13:49:23 | INFO    | thread=- | PROGRESS  | checking allergies...
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | check_allergies | finished in 0.00 seconds
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | CHECK     | Insurance coverage: severity=none; covered=True
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | CHECK     | Dose and kidney function: severity=moderate; daily dose=1200.0mg
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | check_interactions | finished in 0.00 seconds
+13:49:23 | INFO    | thread=- | PROGRESS  | checking interactions...
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | check_formulary | finished in 0.00 seconds
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | check_dosage | finished in 0.00 seconds
+13:49:23 | INFO    | thread=- | PROGRESS  | checking formulary coverage...
+13:49:23 | INFO    | thread=- | PROGRESS  | checking dosage & renal function...
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | risk_assessment | Combine all safety results and explain the risk
+13:49:23 | INFO    | thread=rx-P001-4a2b73f6 | RISK      | Checked 4 results for revision 1; highest severity=major; overall risk=high
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | LLM summary generated (385 chars, 4 recommendations)
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | NEXT STEP | prescriber_review because overall risk is high
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | AUDIT     | actor=ai | action=risk_assessed | rev=1 risk=high
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | risk_assessment | finished in 2.31 seconds
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | prescriber_review | Pause for the prescribing doctor's decision
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | WAITING    | prescriber_review | workflow paused for human input; this node restarts on resume
+13:49:25 | DEBUG   | thread=- | STREAM | interrupt raised
+13:49:25 | INFO    | thread=- | PAUSED    | Next nodes=('prescriber_review',) | Waiting tasks=['prescriber_review']
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | prescriber_review | Pause for the prescribing doctor's decision
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | HUMAN     | Doctor chose: override
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | AUDIT     | actor=prescriber:DR-17 | action=override | Short course, INR monitored twice weekly
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | prescriber_review | finished in 0.00 seconds
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | WAITING    | pharmacist_review | workflow paused for human input; this node restarts on resume
+13:49:25 | DEBUG   | thread=- | STREAM | interrupt raised
+13:49:25 | INFO    | thread=- | PAUSED    | Next nodes=('pharmacist_review',) | Waiting tasks=['pharmacist_review']
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | pharmacist_review | Pause for the pharmacist's final decision
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | HUMAN     | Pharmacist chose: approve
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | AUDIT     | actor=pharmacist:PH-03 | action=approved | rev=1
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | pharmacist_review | finished in 0.00 seconds
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | release_order | Create the approved pharmacy order
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | ORDER | Created approved pharmacy order ORD-779D972356
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | AUDIT     | actor=system | action=order_released | order_id=ORD-779D972356
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | release_order | finished in 0.00 seconds
+13:49:25 | INFO    | thread=rx-P001-4a2b73f6 | STEP START | patient_instructions | Prepare simple instructions for the patient
+13:49:26 | INFO    | thread=rx-P001-4a2b73f6 | AUDIT     | actor=ai | action=patient_instructions_generated | 444 chars
+13:49:26 | INFO    | thread=rx-P001-4a2b73f6 | STEP DONE  | patient_instructions | finished in 1.06 seconds
+13:49:26 | INFO    | thread=- | COMPLETE  | Workflow ended; final status=released
